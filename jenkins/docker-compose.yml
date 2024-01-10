@@ -1,0 +1,33 @@
+version: "3"
+services:
+  jenkins:
+#    image: jenkinsci/blueocean 
+    image: jenkins:latest
+    container_name: jenkins
+    user: root
+    restart: always
+    environment:
+      - JAVA_OPTS=-Duser.timezone=Asia/Shanghai
+    ports:
+      - 8080:8080
+      - 50000:50000
+    cpuset: 0,1,2,3
+    deploy:
+      resources:
+        limits:
+          cpus: 4.00
+    devices:
+      - "/dev/vdb:/dev/vdb"
+    blkio_config:
+      device_read_iops:
+        - path: /dev/vdb
+          rate: 1000
+      device_write_iops:
+        - path: /dev/vdb
+          rate: 1000
+    volumes:
+      - "/home/jenkins_mount/:/var/jenkins_home"
+      - "/etc/localtime:/etc/localtime"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/usr/bin/docker:/bin/docker"
+      - "/usr/lib64/libltdl.so.7:/usr/lib/x86_64-linux-gnu/libltdl.so.7"
