@@ -16,6 +16,7 @@ services:
       resources:
         limits:
           cpus: 4.00
+          memory: 8G
     devices:
       - "/dev/vdb:/dev/vdb"
     blkio_config:
